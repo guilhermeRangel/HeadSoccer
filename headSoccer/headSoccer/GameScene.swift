@@ -12,18 +12,30 @@ import GameplayKit
 class GameScene: SKScene {
     
 
-    var player = SKSpriteNode(imageNamed: "meninaSaia")
+    var player = SKSpriteNode(imageNamed: "p1")
+    var playerTexture = SKTexture(imageNamed: "p1")
+    
     
     override func didMove(to view: SKView) {
-        
         createSceneContents()
+        createPlayer()
         
-        player.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        
-        player.position = CGPoint(x: 0, y: 0  )
-        player.size = CGSize(width: 100, height: 300)
-        addChild(player)
+       
      
+    }
+    
+    func createPlayer(){
+        player.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        player.position = CGPoint(x: 0, y: 0  )
+        player.size = CGSize(width: 100, height: 100)
+        player.name = "player"
+        player.physicsBody?.affectedByGravity = true
+        player.physicsBody?.isDynamic = true
+        player.physicsBody?.description
+        player.physicsBody?.categoryBitMask = 0b1
+        player.physicsBody?.contactTestBitMask =  UInt32.max
+        player.physicsBody = SKPhysicsBody(texture: playerTexture, alphaThreshold: 0, size: player.size)
+        addChild(player)
     }
  
 
@@ -39,8 +51,34 @@ class GameScene: SKScene {
         
         //esse linha controla a tela
         self.physicsBody = SKPhysicsBody.init(edgeLoopFrom: self.frame)
-         print(self.size)
+  
         
     }
+    
+    
+    override public func touchesBegan ( _ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        
+    }
+    
+    override public func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let location = touches.first?.location(in: self){
+            
+            if location.x < player.position.x {
+                
+                player.physicsBody?.applyImpulse(CGVector(dx: -1, dy: 0))
+                print("esq")
+            }
+            else {
+                player.physicsBody?.applyImpulse(CGVector(dx: 1, dy: 0))
+                print("dir")
+            }
+            
+            if location.y > player.position.y + 100 {
+                print("pular")
+            }
+        }
+    }
+    
     
 }
