@@ -15,29 +15,43 @@ final class PhysicsComponent: GKComponent {
     
     
     
-    init(nodePhysics: SKNode, type: Personagem.PersonagemSelected, nodeTexture: SKTexture, multiplier: CGFloat = 1) {
+    init(nodePhysics: SKNode, type: Elements, nodeTexture: SKTexture) {
         self.node = nodePhysics
         super.init()
         
+        let size = CGSize(width: nodeTexture.size().width / 5, height: nodeTexture.size().height / 5)
         
         switch type {
         case .player:
-            let size = CGSize(width: nodeTexture.size().width * multiplier, height: nodeTexture.size().height * multiplier)
-                        node.physicsBody = SKPhysicsBody(texture: nodeTexture, alphaThreshold: 0, size: size)
-                        node.physicsBody?.affectedByGravity = true
-                        node.physicsBody?.isDynamic = true
-                        node.physicsBody?.categoryBitMask = 0b1
-                        node.physicsBody?.contactTestBitMask = UInt32.max
       
-        
-        case .enemy:
-            let size = CGSize(width: nodeTexture.size().width * multiplier, height: nodeTexture.size().height * multiplier)
             node.physicsBody = SKPhysicsBody(texture: nodeTexture, alphaThreshold: 0, size: size)
             node.physicsBody?.affectedByGravity = true
             node.physicsBody?.isDynamic = true
             node.physicsBody?.categoryBitMask = 0b1
             node.physicsBody?.contactTestBitMask = UInt32.max
+      
+        
+        case .enemy:
+        
+            node.physicsBody = SKPhysicsBody(texture: nodeTexture, alphaThreshold: 0, size: size)
+            node.physicsBody?.affectedByGravity = true
+            node.physicsBody?.isDynamic = true
+            node.physicsBody?.categoryBitMask = 0b1
+            node.physicsBody?.contactTestBitMask = UInt32.max
+            
+            
+        case .ball:
+            let sizee = CGSize(width: nodeTexture.size().width / 8, height: nodeTexture.size().height / 8)
+            
+            
+            node.physicsBody = SKPhysicsBody(texture: nodeTexture, alphaThreshold: 0, size: sizee)
+            node.physicsBody?.affectedByGravity = true
+            node.physicsBody?.isDynamic = true
+            node.physicsBody?.categoryBitMask = 0b10
+            node.physicsBody?.contactTestBitMask = 0b1
         }
+        
+      
     }
         
         

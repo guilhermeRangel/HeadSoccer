@@ -48,9 +48,14 @@ class GameViewController: UIViewController {
 //        scene?.entityManager.add(entity: enemy)
 //        enemy.component(ofType: RenderComponent.self)
 //
-        let player = Personagem(type: .player)
+        let player = Personagem(type: Elements.player)
         scene?.entityManager.add(entity: player)
         
+        let enemy = Personagem(type: Elements.enemy)
+        scene?.entityManager.add(entity: enemy)
+        
+        let ball = Personagem(type: Elements.ball)
+        scene?.entityManager.add(entity: ball)
         
         
         

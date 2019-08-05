@@ -52,7 +52,14 @@ class GameScene: SKScene {
     override public func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let location = touches.first?.location(in: self){
             
-      print(location)
+            
+//                    if location.x < nodes.position.x{
+        
+                       // print(location)
+                        entityManager.sceneNode!.children[0].physicsBody?.applyImpulse(CGVector(dx: -10, dy: 0))
+//                    }
+                
+            
             
             
             

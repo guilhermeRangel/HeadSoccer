@@ -16,6 +16,7 @@ final class SpriteComponent: GKComponent {
     init(imageNamed imageName: String) {
         spriteNode = SKSpriteNode(imageNamed: imageName)
         spriteNodeTexture = SKTexture(imageNamed: imageName)
+        
         super.init()
     }
     
