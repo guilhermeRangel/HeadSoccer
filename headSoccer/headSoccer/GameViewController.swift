@@ -53,6 +53,7 @@ class GameViewController: UIViewController {
         
         
         
+        
      
         //player.component(ofType: PostionComponent.self)?.xxx()
 
