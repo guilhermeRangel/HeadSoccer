@@ -50,7 +50,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
    
  
     
-    var ground = SKSpriteNode(imageNamed: "campo00")
+    var ground = SKSpriteNode(imageNamed: "campo07")
     
      var menuSuperior = SKSpriteNode(imageNamed: "placarAndTime")
     
@@ -71,7 +71,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         createSceneContents()
         createBackground()
         
-        createFaixa()
+       // createFaixa()
         createGoleiraEsq()
         createGoleirasDir()
         createMenuSuperior()
@@ -82,16 +82,35 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         createPlayer()
         createEnemy()
         createBall()
-        
+        decreseTimer()
         
     }
     
+    func decreseTimer(){
+        let timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { timer in
+            self.score -= 1
+            if self.score == 0 {
+                self.endGame()
+            }
+           
+           
+        })
+    }
+    
+    var canJump = true
+    func controlJump() {
+        canJump = false
+        let timer = Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false, block: { timer in
+            self.canJump = true
+        })
+    }
     //HUDS
     func createScroreTimer() {
         scoreLabelTimer = SKLabelNode(fontNamed: "Chalkduster")
-        scoreLabelTimer.text = "0"
+        scoreLabelTimer.text = "90"
+        scoreLabelTimer.fontSize = 18
         scoreLabelTimer.horizontalAlignmentMode = .center
-        scoreLabelTimer.position = CGPoint(x: .zero, y: (scene?.size.height)! - (scene?.size.height)! * 0.68  )
+        scoreLabelTimer.position = CGPoint(x: .zero, y: (scene?.size.height)! - (scene?.size.height)! * 0.71  )
         scoreLabelTimer.zPosition = 11
         addChild(scoreLabelTimer)
     }
@@ -99,7 +118,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         scoreLabelPlayer = SKLabelNode(fontNamed: "Chalkduster")
         scoreLabelPlayer.text = "0"
         scoreLabelPlayer.horizontalAlignmentMode = .center
-        scoreLabelPlayer.position = CGPoint(x: .zero - 100, y: (scene?.size.height)! - (scene?.size.height)! * 0.66  )
+        scoreLabelPlayer.position = CGPoint(x: .zero - 75, y: (scene?.size.height)! - (scene?.size.height)! * 0.70  )
         scoreLabelPlayer.zPosition = 11
         addChild(scoreLabelPlayer)
     }
@@ -107,14 +126,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         scoreLabelEnemy = SKLabelNode(fontNamed: "Chalkduster")
         scoreLabelEnemy.text = "0"
         scoreLabelEnemy.horizontalAlignmentMode = .center
-        scoreLabelEnemy.position = CGPoint(x: .zero + 100, y: (scene?.size.height)! - (scene?.size.height)! * 0.66  )
+        scoreLabelEnemy.position = CGPoint(x: .zero + 75, y: (scene?.size.height)! - (scene?.size.height)! * 0.70  )
         scoreLabelEnemy.zPosition = 11
         addChild(scoreLabelEnemy)
     }
     func createBackground(){
         ground.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         ground.position = .zero
-        ground.size = CGSize(width: (scene?.size.width)!, height: (scene?.size.height)! * 1.2)
+        ground.size = CGSize(width: (scene?.size.width)!, height: (scene?.size.height)! * 1.55)
         ground.name = "ground"
         ground.zPosition = 0
         addChild(ground)
@@ -130,32 +149,43 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func createMenuSuperior(){
         menuSuperior.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        menuSuperior.position = CGPoint(x: .zero, y: (scene?.size.height)! - (scene?.size.height)! * 0.62  )
-        menuSuperior.size = CGSize(width: (scene?.size.width)! / 3, height: (scene?.size.height)! / 4 )
+        menuSuperior.position = CGPoint(x: .zero, y: (scene?.size.height)! - (scene?.size.height)! * 0.66 )
+        menuSuperior.size = CGSize(width: (scene?.size.width)! / 4, height: (scene?.size.height)! / 5 )
         menuSuperior.zPosition = 10
         addChild(menuSuperior)
     }
     
     func createGoleiraEsq(){
         goleiraEsq.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        goleiraEsq.position = CGPoint(x: -(scene?.size.width)! * 0.45, y: 0  )
+        goleiraEsq.position = CGPoint(x: -(scene?.size.width)! * 0.45, y: (scene?.size.height)! - (scene?.size.height)! * 1.15  )
         goleiraEsq.size = CGSize(width: 100, height: 200)
-        goleiraEsq.zPosition = 2
+        goleiraEsq.zPosition = 4
         
         goleiraEsq.name = "goleiraEsq"
-        goleiraEsq.physicsBody?.categoryBitMask = 0b1000
-        goleiraEsq.physicsBody = SKPhysicsBody(rectangleOf: goleiraEsq.size)
+        
+        goleiraEsq.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: goleiraEsq.size.width - (goleiraEsq.size.width) * 0.2, height: goleiraEsq.size.height))
         goleiraEsq.physicsBody?.affectedByGravity = false
         goleiraEsq.physicsBody?.allowsRotation = false
-        goleiraEsq.physicsBody?.isDynamic = true
+        goleiraEsq.physicsBody?.isDynamic = false
+        goleiraEsq.physicsBody?.categoryBitMask = 0b1000
+        goleiraEsq.physicsBody?.collisionBitMask = 0
         addChild(goleiraEsq)
     }
     
     func createGoleirasDir(){
         goleiraDir.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        goleiraDir.position = CGPoint(x: (scene?.size.width)! * 0.45, y: 0  )
+        goleiraDir.position = CGPoint(x: (scene?.size.width)! * 0.45, y: (scene?.size.height)! - (scene?.size.height)! * 1.15  )
         goleiraDir.size = CGSize(width: 100, height: 200)
-        goleiraDir.zPosition = 2
+        goleiraDir.zPosition = 4
+        
+        goleiraDir.name = "goleiraDir"
+        
+        goleiraDir.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: goleiraEsq.size.width - (goleiraEsq.size.width) * 0.2, height: goleiraEsq.size.height))
+        goleiraDir.physicsBody?.affectedByGravity = false
+        goleiraDir.physicsBody?.allowsRotation = false
+        goleiraDir.physicsBody?.isDynamic = false
+        goleiraDir.physicsBody?.categoryBitMask = 0b1000
+        goleiraDir.physicsBody?.collisionBitMask = 0
         addChild(goleiraDir)
     }
     
@@ -167,11 +197,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         player.position = CGPoint(x: -(scene?.size.width)! * 0.3, y: 0  )
         player.size = CGSize(width: 100, height: 100)
         player.name = "player"
+      
+        player.physicsBody = SKPhysicsBody(texture: playerTexture, alphaThreshold: 0, size: player.size)
         player.physicsBody?.affectedByGravity = true
         player.physicsBody?.isDynamic = true
+        
         player.physicsBody?.categoryBitMask = 0b1
         player.physicsBody?.contactTestBitMask =  0b10
-        player.physicsBody = SKPhysicsBody(texture: playerTexture, alphaThreshold: 0, size: player.size)
+        player.physicsBody?.collisionBitMask = 0b10000
         player.physicsBody?.allowsRotation = false
         player.zPosition = 3
         addChild(player)
@@ -182,39 +215,41 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         enemy.position = CGPoint(x: (scene?.size.width)! * 0.3, y: 0  )
         enemy.size = CGSize(width: 100, height: 100)
         enemy.name = "enemy"
+        enemy.physicsBody = SKPhysicsBody(rectangleOf: enemy.size)
         enemy.physicsBody?.affectedByGravity = true
         enemy.physicsBody?.isDynamic = true
         enemy.zPosition = 3
-        enemy.physicsBody?.categoryBitMask = 0b10
-        enemy.physicsBody?.contactTestBitMask =  0b100
-        enemy.physicsBody = SKPhysicsBody(rectangleOf: enemy.size)
+        enemy.physicsBody?.categoryBitMask = 0b1
+        enemy.physicsBody?.contactTestBitMask =  0b10
+        enemy.physicsBody?.collisionBitMask = 0b10000
         enemy.physicsBody?.allowsRotation =  false
-        addChild(enemy)
+//        addChild(enemy)
     }
     
     func createBall(){
         ball.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         ball.position = CGPoint(x: 0, y: 0  )
-        ball.size = CGSize(width: 50, height: 50)
+        ball.size = CGSize(width: 35, height: 35)
         ball.name = "ball"
+         ball.physicsBody = SKPhysicsBody(circleOfRadius: 17.5)
         ball.physicsBody?.affectedByGravity = true
         ball.physicsBody?.isDynamic = true
         ball.physicsBody?.categoryBitMask = 0b10
         ball.physicsBody?.contactTestBitMask =  0b1 | 0b1000
+        ball.physicsBody?.collisionBitMask = 0b1 | 0b10000
         ball.zPosition = 3
-        ball.physicsBody = SKPhysicsBody(circleOfRadius: 25)
         ball.physicsBody?.allowsRotation = true
         addChild(ball)
     }
     
     func createSceneContents() {
         self.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        self.physicsWorld.gravity = CGVector(dx: 0, dy: -1)
-        
-        
+        self.physicsWorld.gravity = CGVector(dx: 0, dy: -9.8)
+
         guard let rect = scene?.frame else { return }
-        let rectCustom = CGRect(x: rect.origin.x, y: rect.origin.y + 100, width: rect.size.width, height: rect.size.height)
+        let rectCustom = CGRect(x: rect.origin.x, y: rect.origin.y + 50, width: rect.size.width, height: rect.size.height)
         self.physicsBody = SKPhysicsBody.init(edgeLoopFrom:  rectCustom)
+        self.physicsBody?.categoryBitMask = 0b10000
         
     
     }
@@ -251,27 +286,45 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
     
+    var firstTouch: CGPoint?
     
-    
+    override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+       
+        firstTouch = touches.first?.location(in: self)
+        
+        if firstTouch!.x >= 0{
+        
+            player.physicsBody?.allowsRotation = true
+            let shoot = SKAction.rotate(byAngle: .pi/2, duration: 0.2)
+            player.run(shoot)
+        }
+      
+        player.zRotation = 0
+        
+
+    }
     
     //MARK: MOVIMENTOS
     override public func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
         if let location = touches.first?.location(in: self){
-            
-            if location.x < player.position.x {
-                
-                player.physicsBody?.applyImpulse(CGVector(dx: -30, dy: 0))
-                print("esq")
+            //print(location)
+            if location.x < 0 {
+                if location.x < firstTouch!.x{
+                    print("FOI PRA ESQUERDA")
+                    player.physicsBody?.applyImpulse(CGVector(dx: -3, dy: 0))
+                }
+                if location.x > firstTouch!.x{
+                    print("FOI PRA DIREITA")
+                    player.physicsBody?.applyImpulse(CGVector(dx: 3, dy: 0))
+                }
+                if location.y > firstTouch!.y + 150 && canJump{
+                    print("FOI PRA DIREITA")
+                    player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 125))
+                    controlJump()
+                }
             }
-            else {
-                player.physicsBody?.applyImpulse(CGVector(dx: 30, dy: 0))
-                print("dir")
-            }
-            
-            if location.y > player.position.y + 60 {
-                player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 10))
-                print("pular")
-            }
+     
         }
     }
     
@@ -284,7 +337,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         if((nodeA.name == "player" && nodeB.name == "ball") ||
             (nodeA.name == "ball" && nodeB.name == "player")){
-          print("player colidiu com a bola")
+          ball.physicsBody?.applyForce(CGVector(dx: 2, dy: 1))
 
         }
         
@@ -295,6 +348,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         if((nodeA.name == "enemy" && nodeB.name == "ball") ||
+            (nodeA.name == "ball" && nodeB.name == "enemy")){
+            print("enemy colidiu com bola")
+            
+        }
+        
+        if((nodeA.name == "goleiraEsq" && nodeB.name == "ball") ||
+            (nodeA.name == "ball" && nodeB.name == "goleiraEsq")){
+            print("enemy colidiu com bola")
+            scoreEnemy += 1
+            spawnElements()
+        }
+        if((nodeA.name == "goleiraDir" && nodeB.name == "ball") ||
+            (nodeA.name == "ball" && nodeB.name == "goleiraDir")){
+            print("enemy colidiu com bola")
+            scorePlayer1 += 1
+            spawnElements()
+        }
+        
+        if((nodeA.name == "" && nodeB.name == "ball") ||
             (nodeA.name == "ball" && nodeB.name == "enemy")){
             print("enemy colidiu com bola")
             
