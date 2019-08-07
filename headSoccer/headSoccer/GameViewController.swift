@@ -12,18 +12,21 @@ import GameplayKit
 
 class GameViewController: UIViewController {
     
-    
+    var menuScene: MenuScreen?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let scene = GameScene(size: view.bounds.size)
         let skView = view as! SKView
-        skView.showsFPS = true
-        skView.showsNodeCount = true
-        skView.showsPhysics = true
-        skView.ignoresSiblingOrder = true
-        scene.scaleMode = .aspectFill
-        skView.presentScene(scene)
+        
+        
+        menuScene = MenuScreen(size: view.bounds.size)
+        menuScene?.scaleMode = .aspectFit
+        skView.presentScene(menuScene)
+        
+        
+        
+       
+        
         
     }
     

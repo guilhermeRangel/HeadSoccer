@@ -33,9 +33,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func didMove(to view: SKView) {
        physicsWorld.contactDelegate = self
         addElements()
-        
-        
     }
+    
+    
     
     func addElements(){
         createSceneContents()
@@ -60,7 +60,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var controleDoTimer = true
     func decreseTimer(){
         let timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: controleDoTimer, block: { timer in
-            
             if self.controleDoTimer{
                 self.score -= 1
                 if self.score == 0 {
@@ -105,8 +104,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         emptyNodeDir.physicsBody?.isDynamic = false
         emptyNodeDir.physicsBody?.allowsRotation = false
         emptyNodeDir.physicsBody?.affectedByGravity = false
-        
-      
         addChild(emptyNodeEsq)
         addChild(emptyNodeDir)
     }
@@ -192,9 +189,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(goleiraDir)
     }
     
-    
-    
-    //MARK CREATE
     func createPlayer(){
         player.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         player.position = CGPoint(x: -(scene?.size.width)! * 0.3, y: 0  )
@@ -252,15 +246,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.physicsBody = SKPhysicsBody.init(edgeLoopFrom:  rectCustom)
         self.physicsBody?.categoryBitMask = 0b10000
         self.physicsBody?.contactTestBitMask = 0b10
+        self.physicsBody?.collisionBitMask = 0b10
     }
-    
-    
-  
-  
-    
+
     //MARK EDIT ELEMENTS
-    
- 
     func endGame(){
         if scorePlayer1 > scoreEnemy {
             print("vencedor player1")
@@ -278,12 +267,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         ball.position = .zero
         player.position = CGPoint(x: -(scene?.size.width)! * 0.3, y: 0)
         enemy.position = CGPoint(x: (scene?.size.width)! * 0.3, y: 0)
-         addChild(ball)
+        addChild(ball)
         addChild(player)
         addChild(enemy)
     }
     
-    var time: Double = 0.0
+
     override func update(_ currentTime: TimeInterval) {
         
        
@@ -296,44 +285,29 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var firstTouch: CGPoint?
     
     override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-       
         firstTouch = touches.first?.location(in: self)
         
         if firstTouch!.x >= 0{
-        
             player.physicsBody?.allowsRotation = true
             let shoot = SKAction.rotate(byAngle: .pi/2, duration: 0.2)
             player.run(shoot)
         }
         
         if firstTouch!.y > -20 && canJump{
-            
             player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 125))
             controlJump()
         }
-      
         player.zRotation = 0
-        
-
     }
     
     //MARK: MOVIMENTOS
     override public func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
+
         if let location = touches.first?.location(in: self){
-            //print(location)
             if location.x < 0 {
-                if location.x < firstTouch!.x{
-                
-                    player.physicsBody?.applyImpulse(CGVector(dx: -3, dy: 0))
-                }
-                if location.x > firstTouch!.x{
-                  
-                    player.physicsBody?.applyImpulse(CGVector(dx: 3, dy: 0))
-                }
-               
+                if location.x < firstTouch!.x{player.physicsBody?.applyImpulse(CGVector(dx: -3, dy: 0))}
+                if location.x > firstTouch!.x{player.physicsBody?.applyImpulse(CGVector(dx: 3, dy: 0))}
             }
-     
         }
     }
     
@@ -348,10 +322,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if((nodeA.name == "player" && nodeB.name == "ball") ||
             (nodeA.name == "ball" && nodeB.name == "player")){
                 
-                if !jumpState{
-                    ball.physicsBody?.applyImpulse(CGVector(dx: 45, dy: 10))
-                    }
-          ball.physicsBody?.applyImpulse(CGVector(dx: 30, dy: 25))
+                if !jumpState{ball.physicsBody?.applyImpulse(CGVector(dx: 45, dy: 10))}
+                ball.physicsBody?.applyImpulse(CGVector(dx: 30, dy: 25))
 
         }
         //player e inimigo
@@ -398,7 +370,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
           
         }
         
-        if(nodeA.name == "scene" && nodeB.name == "ball"){
+        if((nodeA.name == "scene" && nodeB.name == "ball") ||
+            (nodeA.name == "ball" && nodeB.name == "scene")) {
               //print("bola com scene")
             let number = Int.random(in: 0 ... 10)
                 if number > 8 {
