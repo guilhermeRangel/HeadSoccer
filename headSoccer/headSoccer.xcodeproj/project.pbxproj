@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		705D62E622FB2531005F78C2 /* MenuScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 705D62E522FB2531005F78C2 /* MenuScreen.swift */; };
 		70BC536C22F363BD00FB7E64 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 70BC536B22F363BD00FB7E64 /* GameScene.sks */; };
 		70BC536E22F363BD00FB7E64 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 70BC536D22F363BD00FB7E64 /* Actions.sks */; };
 		70BC537022F363BD00FB7E64 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70BC536F22F363BD00FB7E64 /* GameScene.swift */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		705D62E522FB2531005F78C2 /* MenuScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuScreen.swift; sourceTree = "<group>"; };
 		70BC536622F363BD00FB7E64 /* headSoccer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = headSoccer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		70BC536922F363BD00FB7E64 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		70BC536B22F363BD00FB7E64 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -63,6 +65,7 @@
 				70FDDC4D22F47AD5009821F9 /* Support */,
 				70BC536F22F363BD00FB7E64 /* GameScene.swift */,
 				70BC537122F363BD00FB7E64 /* GameViewController.swift */,
+				705D62E522FB2531005F78C2 /* MenuScreen.swift */,
 				70BC537622F363BF00FB7E64 /* Assets.xcassets */,
 				70BC536922F363BD00FB7E64 /* AppDelegate.swift */,
 				70FDDC5822F484AA009821F9 /* Main.storyboard */,
@@ -157,6 +160,7 @@
 				70FDDC5522F4834C009821F9 /* AppDelegate.swift in Sources */,
 				70BC537022F363BD00FB7E64 /* GameScene.swift in Sources */,
 				70BC537222F363BD00FB7E64 /* GameViewController.swift in Sources */,
+				705D62E622FB2531005F78C2 /* MenuScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
