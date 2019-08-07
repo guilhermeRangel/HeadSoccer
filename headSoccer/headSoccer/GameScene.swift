@@ -16,6 +16,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var scoreLabelPlayer: SKLabelNode!
     var scoreLabelEnemy: SKLabelNode!
     
+    var entityy:GKEntity?
+    var enemyAgente:GKAgent2D?
+    var ballAgente:GKAgent2D?
+    var seekBehavior:GKBehavior?
+    var gkGoal: GKGoal?
+    
+    var timeStamp = 0.0
+    
     var score = 90 {didSet { scoreLabelTimer.text = "\(score)"}}
     var scorePlayer1 = 0 {didSet {scoreLabelPlayer.text = "\(scorePlayer1)"}}
     var scoreEnemy = 0 {didSet {scoreLabelEnemy.text = "\(scoreEnemy)"}}
@@ -31,8 +39,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
      var emptyNodeDir = SKNode() // goleira
     
     override func didMove(to view: SKView) {
-       physicsWorld.contactDelegate = self
+        physicsWorld.contactDelegate = self
         addElements()
+        setiA()
+        enemyAgente?.delegate = self
     }
     
     
@@ -53,6 +63,40 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         decreseTimer()
         createEmptyNode()
         
+    }
+    
+    func setiA(){
+        let ballAgent =  GKAgent2D()
+        ballAgent.position = vector_float2(x: 0, y: 0)
+        ballAgent.radius = 0.2
+        
+        let enemyAgent = GKAgent2D()
+        enemyAgent.position = vector_float2(x: 0, y: 0)
+        
+        gkGoal = GKGoal(toInterceptAgent: ballAgent, maxPredictionTime: 5.0)
+        
+        let meioEsqCima = float2(x: 0, y: Float(CGFloat((view?.scene?.size.height)!)))
+        let meioEsqBaixo = float2(x: 0, y: 0)
+        
+        
+        let meioDirBaixo = float2(x: Float(CGFloat((view?.scene?.size.width)!)), y: 0)
+        let meioDirCima = float2(x: Float(CGFloat((view?.scene?.size.width)!)), y: Float(CGFloat((view?.scene?.size.height)!)))
+        
+        let pathGoal = GKPath(points: [meioDirBaixo,meioDirCima,meioEsqCima,meioEsqBaixo], radius: 0.1, cyclical: true)
+        let gkGoalToStayOn = GKGoal.init(toFollow: pathGoal, maxPredictionTime: 1, forward: true)
+        seekBehavior = GKBehavior(goals: [gkGoalToStayOn])
+        enemyAgent.mass = 0.02
+        enemyAgent.maxSpeed = 1
+        //botAgent.speed = 0.5
+        enemyAgent.maxAcceleration = 1
+        
+        
+        enemyAgent.behavior = seekBehavior
+        enemyAgent.radius = 0.2
+        
+        
+        self.ballAgente = ballAgent
+        self.enemyAgente = enemyAgent
     }
     
     
@@ -234,6 +278,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         ball.physicsBody?.collisionBitMask = 0b1 | 0b10000 | 0b100000
         ball.zPosition = 3
         ball.physicsBody?.allowsRotation = true
+        ballAgente?.position.x = Float(ball.position.x)
+        ballAgente?.position.y = Float(ball.position.y)
         addChild(ball)
     }
     
@@ -274,10 +320,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
 
     override func update(_ currentTime: TimeInterval) {
-        
+        if scene != nil {
+            if timeStamp == 0.0 {
+                timeStamp = currentTime
+                enemyAgente?.position = vector_float2(x: Float((enemy.position.x) * 0.23), y: Float((enemy.position.y) * 0.23))
+            } else {
+                ballAgente?.position = vector_float2(x: Float((ball.position.x) * 0.23), y: Float((ball.position.y) * 0.23))
+                
+                
+                enemyAgente?.update(deltaTime: currentTime - timeStamp)
+                timeStamp = currentTime
+            }
+        }
        
-        
-        // Called before each frame is rendered
     }
     
     
@@ -323,7 +378,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             (nodeA.name == "ball" && nodeB.name == "player")){
                 
                 if !jumpState{ball.physicsBody?.applyImpulse(CGVector(dx: 45, dy: 10))}
-                ball.physicsBody?.applyImpulse(CGVector(dx: 30, dy: 25))
+                ball.physicsBody?.applyImpulse(CGVector(dx: 30, dy: 15))
 
         }
         //player e inimigo
@@ -355,12 +410,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             scorePlayer1 += 1
             spawnElements()
         }
+        //chute do inimigo
+        if((nodeA.name == "enemy" && nodeB.name == "ball") ||
+            (nodeA.name == "ball" && nodeB.name == "enemy")){
+            //print("bola colidiu com parte de cima do gol emptyNodeDir")
+            enemy.physicsBody?.allowsRotation = true
+            let shoot = SKAction.rotate(byAngle: .pi/2, duration: 0.2)
+            enemy.run(shoot)
+            let standUp = SKAction.rotate(byAngle: .pi * 2, duration: 0)
+            enemy.run(standUp)
+            enemy.zRotation = 0
+            enemy.physicsBody?.applyImpulse(CGVector(dx: -10, dy: -20))
+        }
         
         if((nodeA.name == "emptyNodeDir" && nodeB.name == "ball") ||
             (nodeA.name == "ball" && nodeB.name == "emptyNodeDir")){
             //print("bola colidiu com parte de cima do gol emptyNodeDir")
              ball.physicsBody?.applyImpulse(CGVector(dx: -30, dy: -5))
-          
         }
         
         if((nodeA.name == "emptyNodeEsq" && nodeB.name == "ball") ||
@@ -383,4 +449,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
 
+}
+
+
+
+extension GameScene: GKAgentDelegate{
+    
+    
+    func agentDidUpdate(_ agent: GKAgent) {
+        if let agent = agent as? GKAgent2D{
+            if agent == enemyAgente {
+                enemy.position = CGPoint(x: Double(agent.position.x), y: Double(agent.position.y))
+                
+            }
+        }
+    }
 }

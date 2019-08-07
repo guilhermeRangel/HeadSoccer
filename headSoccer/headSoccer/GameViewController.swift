@@ -18,7 +18,6 @@ class GameViewController: UIViewController {
         super.viewDidLoad()
         let skView = view as! SKView
         
-        
         menuScene = MenuScreen(size: view.bounds.size)
         menuScene?.scaleMode = .aspectFit
         skView.presentScene(menuScene)
