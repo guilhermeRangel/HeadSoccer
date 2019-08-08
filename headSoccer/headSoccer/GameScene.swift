@@ -18,6 +18,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var entityy:GKEntity?
     var enemyAgente:GKAgent2D?
+    var playerAgente:GKAgent2D?
     var ballAgente:GKAgent2D?
     var seekBehavior:GKBehavior?
     var gkGoal: GKGoal?
@@ -71,19 +72,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         ballAgent.radius = 0.2
         
         let enemyAgent = GKAgent2D()
-        enemyAgent.position = vector_float2(x: 0, y: 0)
+        enemyAgent.position = vector_float2(x: Float(enemy.position.x), y: Float(enemy.position.y))
         
+        let golEsq = GKAgent2D()
+        golEsq.position = .zero
          gkGoal = GKGoal(toSeekAgent: ballAgent)
-
-        seekBehavior = GKBehavior(goal: gkGoal!, weight: 5)
-        enemyAgent.mass = 0.02
+   
+      //  let goal = GKGoal(toSeparateFrom: [golEsq], maxDistance: 1000, maxAngle: 2 * .pi)
+        
+        
+        seekBehavior = GKBehavior(goals: [gkGoal!])
+        enemyAgent.mass = 0.01
         enemyAgent.maxSpeed = 100.0
-        //botAgent.speed = 0.5
         enemyAgent.maxAcceleration = 1000.0
         
-        
+        //GKGoal(toSeekAgent: ballAgent)
         enemyAgent.behavior = seekBehavior
-        enemyAgent.radius = 0.8
+        enemyAgent.radius = 1
         
         
         self.ballAgente = ballAgent
@@ -301,16 +306,28 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-    func spawnElements(){
+    func spawnElements(nodaA : String, nodeB: String){
+        
+        
         ball.removeFromParent()
         player.removeFromParent()
         enemy.removeFromParent()
         ball.position = .zero
+      
         player.position = CGPoint(x: -(scene?.size.width)! * 0.3, y: 0)
         enemy.position = CGPoint(x: (scene?.size.width)! * 0.3, y: 0)
+        
+        
+        
         addChild(ball)
         addChild(player)
         addChild(enemy)
+        if nodaA == "goleiraEsq"  || nodeB == "goleiraEsq" {
+            ball.physicsBody?.applyImpulse(CGVector(dx: -5, dy: 30))
+        }else if nodaA == "goleiraDir"  || nodeB == "goleiraDir" {
+            ball.physicsBody?.applyImpulse(CGVector(dx: 5, dy: 30))
+        }
+        
     }
     
 
@@ -324,7 +341,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 
                
                 ballAgente?.position = vector_float2(x: Float((ball.position.x)), y: Float((player.position.y)))
-                
                 enemyAgente?.update(deltaTime: currentTime - timeStamp)
                 
                 timeStamp = currentTime
@@ -376,7 +392,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             (nodeA.name == "ball" && nodeB.name == "player")){
                 
                 if !jumpState{ball.physicsBody?.applyImpulse(CGVector(dx: 45, dy: 10))}
-                ball.physicsBody?.applyImpulse(CGVector(dx: 30, dy: 15))
+                ball.physicsBody?.applyImpulse(CGVector(dx: 20, dy: 15))
 
         }
         //player e inimigo
@@ -399,14 +415,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             (nodeA.name == "ball" && nodeB.name == "goleiraEsq")){
            // print("enemy colidiu com bola")
             scoreEnemy += 1
-            spawnElements()
+            spawnElements(nodaA: nodeA.name!, nodeB: nodeB.name!)
         }
         //goleira dir e bola
         if((nodeA.name == "goleiraDir" && nodeB.name == "ball") ||
             (nodeA.name == "ball" && nodeB.name == "goleiraDir")){
             //print("enemy colidiu com bola")
             scorePlayer1 += 1
-            spawnElements()
+            spawnElements(nodaA: nodeA.name!, nodeB: nodeB.name!)
         }
         //chute do inimigo
         if((nodeA.name == "enemy" && nodeB.name == "ball") ||
@@ -418,7 +434,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let standUp = SKAction.rotate(byAngle: .pi * 2, duration: 0)
             enemy.run(standUp)
             enemy.zRotation = 0
-            enemy.physicsBody?.applyImpulse(CGVector(dx: -10, dy: 20))
+            enemy.physicsBody?.applyImpulse(CGVector(dx: -20, dy: 15))
         }
         
         if((nodeA.name == "emptyNodeDir" && nodeB.name == "ball") ||
