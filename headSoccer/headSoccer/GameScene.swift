@@ -240,7 +240,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         player.position = CGPoint(x: -(scene?.size.width)! * 0.3, y: 0)
         player.size = CGSize(width: 65, height: 65)
         player.name = "player"
-        player.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: player.size.width / 2, height: player.size.height))
+        player.physicsBody = SKPhysicsBody(bodies: [SKPhysicsBody(rectangleOf: CGSize(width: player.size.width, height: player.size.height / 3), center: CGPoint(x: 0, y: -30)),
+                                                    SKPhysicsBody.init(circleOfRadius: player.size.width / 4 + 5 , center: CGPoint(x: -25, y: +20))])
+        // player.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: player.size.width, height: player.size.height), center: .zero)
         player.physicsBody?.mass = 0.25
         player.physicsBody?.affectedByGravity = true
         player.physicsBody?.isDynamic = true
@@ -257,7 +259,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         enemy.position = CGPoint(x: (scene?.size.width)! * 0.3, y: 0  )
         enemy.size = CGSize(width: 65, height: 65)
         enemy.name = "enemy"
-        enemy.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: player.size.width / 2, height: player.size.height))
+        enemy.physicsBody = SKPhysicsBody(bodies: [SKPhysicsBody(rectangleOf: CGSize(width: player.size.width, height: player.size.height / 3), center: CGPoint(x: 0, y: -30)),
+                                                   SKPhysicsBody.init(circleOfRadius: player.size.width / 4 + 5 , center: CGPoint(x: 25, y: +20))])
         enemy.physicsBody?.affectedByGravity = true
         enemy.physicsBody?.isDynamic = true
         enemy.zPosition = 3
