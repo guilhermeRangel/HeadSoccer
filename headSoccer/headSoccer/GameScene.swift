@@ -18,7 +18,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var entityy:GKEntity?
     var enemyAgente:GKAgent2D?
-    var playerAgente:GKAgent2D?
     var ballAgente:GKAgent2D?
     var seekBehavior:GKBehavior?
     var gkGoal: GKGoal?
@@ -37,7 +36,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var goleiraEsq = SKSpriteNode(imageNamed: "goleiraEsq")
     var goleiraDir = SKSpriteNode(imageNamed: "goleiraDir")
     var emptyNodeEsq = SKNode() // goleira
-     var emptyNodeDir = SKNode() // goleira
+    var emptyNodeDir = SKNode() // goleira
     
     override func didMove(to view: SKView) {
         physicsWorld.contactDelegate = self
@@ -51,7 +50,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func addElements(){
         createSceneContents()
         createBackground()
-       // createFaixa()
+        // createFaixa()
         createGoleiraEsq()
         createGoleirasDir()
         createMenuSuperior()
@@ -72,23 +71,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         ballAgent.radius = 0.2
         
         let enemyAgent = GKAgent2D()
-        enemyAgent.position = vector_float2(x: Float(enemy.position.x), y: Float(enemy.position.y))
+        enemyAgent.position = vector_float2(x: 0, y: 0)
         
-        let golEsq = GKAgent2D()
-        golEsq.position = .zero
-         gkGoal = GKGoal(toSeekAgent: ballAgent)
-   
-      //  let goal = GKGoal(toSeparateFrom: [golEsq], maxDistance: 1000, maxAngle: 2 * .pi)
+        gkGoal = GKGoal(toSeekAgent: ballAgent)
         
-        
-        seekBehavior = GKBehavior(goals: [gkGoal!])
-        enemyAgent.mass = 0.01
+        seekBehavior = GKBehavior(goal: gkGoal!, weight: 5)
+        enemyAgent.mass = 0.02
         enemyAgent.maxSpeed = 100.0
         enemyAgent.maxAcceleration = 1000.0
         
-        //GKGoal(toSeekAgent: ballAgent)
+        
         enemyAgent.behavior = seekBehavior
-        enemyAgent.radius = 1
+        enemyAgent.radius = 0.8
         
         
         self.ballAgente = ballAgent
@@ -109,6 +103,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     
                 }
             }
+        })
+    }
+    
+    var canShoot = true
+    var shootState = true
+    func controlBotShoot() {
+        canShoot = false
+        shootState = false
+        let timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { timer in
+            self.canShoot = true
+            self.shootState = true
         })
     }
     
@@ -185,7 +190,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func createFaixa(){
-         menuInferior.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        menuInferior.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         menuInferior.position = CGPoint(x: .zero, y: (scene?.size.height)! - (scene?.size.height)! * 1.5  )
         menuInferior.size = CGSize(width: (scene?.size.width)!, height: (scene?.size.height)! * 0.3)
         menuInferior.zPosition = 1
@@ -232,12 +237,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func createPlayer(){
         player.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        player.position = CGPoint(x: -(scene?.size.width)! * 0.3, y: 0  )
-        player.size = CGSize(width: 100, height: 100)
+        player.position = CGPoint(x: -(scene?.size.width)! * 0.3, y: 0)
+        player.size = CGSize(width: 65, height: 65)
         player.name = "player"
-        player.physicsBody = SKPhysicsBody(bodies: [SKPhysicsBody(rectangleOf: CGSize(width: player.size.width, height: player.size.height / 3), center: CGPoint(x: 0, y: -30)),
-                                               SKPhysicsBody.init(circleOfRadius: player.size.width / 4 + 5 , center: CGPoint(x: -25, y: +20))])
-       // player.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: player.size.width, height: player.size.height), center: .zero)
+        player.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: player.size.width / 2, height: player.size.height))
+        player.physicsBody?.mass = 0.25
         player.physicsBody?.affectedByGravity = true
         player.physicsBody?.isDynamic = true
         player.physicsBody?.categoryBitMask = 0b1
@@ -251,10 +255,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func createEnemy(){
         enemy.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         enemy.position = CGPoint(x: (scene?.size.width)! * 0.3, y: 0  )
-        enemy.size = CGSize(width: 100, height: 100)
+        enemy.size = CGSize(width: 65, height: 65)
         enemy.name = "enemy"
-        enemy.physicsBody = SKPhysicsBody(bodies: [SKPhysicsBody(rectangleOf: CGSize(width: player.size.width, height: player.size.height / 3), center: CGPoint(x: 0, y: -30)),
-                                                   SKPhysicsBody.init(circleOfRadius: player.size.width / 4 + 5 , center: CGPoint(x: 25, y: +20))])
+        enemy.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: player.size.width / 2, height: player.size.height))
         enemy.physicsBody?.affectedByGravity = true
         enemy.physicsBody?.isDynamic = true
         enemy.zPosition = 3
@@ -294,7 +297,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.physicsBody?.contactTestBitMask = 0b10
         self.physicsBody?.collisionBitMask = 0b10
     }
-
+    
     //MARK EDIT ELEMENTS
     func endGame(){
         if scorePlayer1 > scoreEnemy {
@@ -306,47 +309,36 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-    func spawnElements(nodaA : String, nodeB: String){
-        
-        
+    func spawnElements(){
         ball.removeFromParent()
         player.removeFromParent()
         enemy.removeFromParent()
         ball.position = .zero
-      
         player.position = CGPoint(x: -(scene?.size.width)! * 0.3, y: 0)
         enemy.position = CGPoint(x: (scene?.size.width)! * 0.3, y: 0)
-        
-        
-        
         addChild(ball)
         addChild(player)
         addChild(enemy)
-        if nodaA == "goleiraEsq"  || nodeB == "goleiraEsq" {
-            ball.physicsBody?.applyImpulse(CGVector(dx: -5, dy: 30))
-        }else if nodaA == "goleiraDir"  || nodeB == "goleiraDir" {
-            ball.physicsBody?.applyImpulse(CGVector(dx: 5, dy: 30))
-        }
-        
     }
     
-
+    
     override func update(_ currentTime: TimeInterval) {
         if scene != nil {
             if timeStamp == 0.0 {
                 timeStamp = currentTime
                 enemyAgente?.position = vector_float2(x: Float((enemy.position.x)), y: Float((enemy.position.y)))
-       
+                
             } else {
                 
-               
+                
                 ballAgente?.position = vector_float2(x: Float((ball.position.x)), y: Float((player.position.y)))
+                
                 enemyAgente?.update(deltaTime: currentTime - timeStamp)
                 
                 timeStamp = currentTime
             }
         }
-       
+        
     }
     
     
@@ -361,21 +353,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let shoot = SKAction.rotate(byAngle: .pi/2, duration: 0.2)
             player.run(shoot)
         }
-        
-        if firstTouch!.y > -20 && canJump{
-            player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 125))
-            controlJump()
-        }
         player.zRotation = 0
     }
     
     //MARK: MOVIMENTOS
     override public func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-
+        
         if let location = touches.first?.location(in: self){
             if location.x < 0 {
                 if location.x < firstTouch!.x{player.physicsBody?.applyImpulse(CGVector(dx: -3, dy: 0))}
                 if location.x > firstTouch!.x{player.physicsBody?.applyImpulse(CGVector(dx: 3, dy: 0))}
+            }
+            if location.y > firstTouch!.y + 100 && canJump{
+                player.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 150))
+                controlJump()
             }
         }
     }
@@ -390,10 +381,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //player e bola
         if((nodeA.name == "player" && nodeB.name == "ball") ||
             (nodeA.name == "ball" && nodeB.name == "player")){
-                
-                if !jumpState{ball.physicsBody?.applyImpulse(CGVector(dx: 45, dy: 10))}
-                ball.physicsBody?.applyImpulse(CGVector(dx: 20, dy: 15))
-
+            
+            if !jumpState{ball.physicsBody?.applyImpulse(CGVector(dx: 45, dy: 10))}
+            ball.physicsBody?.applyImpulse(CGVector(dx: 30, dy: 15))
+            
         }
         //player e inimigo
         if((nodeA.name == "player" && nodeB.name == "enemy") ||
@@ -403,66 +394,61 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
         }
         
-        //inimigo e bola
-        if((nodeA.name == "enemy" && nodeB.name == "ball") ||
-            (nodeA.name == "ball" && nodeB.name == "enemy")){
-            ball.physicsBody?.applyImpulse(CGVector(dx: -5, dy: 10))
-            
-        }
-        
         //goleira esq e bola
         if((nodeA.name == "goleiraEsq" && nodeB.name == "ball") ||
             (nodeA.name == "ball" && nodeB.name == "goleiraEsq")){
-           // print("enemy colidiu com bola")
+            // print("enemy colidiu com bola")
             scoreEnemy += 1
-            spawnElements(nodaA: nodeA.name!, nodeB: nodeB.name!)
+            spawnElements()
         }
         //goleira dir e bola
         if((nodeA.name == "goleiraDir" && nodeB.name == "ball") ||
             (nodeA.name == "ball" && nodeB.name == "goleiraDir")){
             //print("enemy colidiu com bola")
             scorePlayer1 += 1
-            spawnElements(nodaA: nodeA.name!, nodeB: nodeB.name!)
+            spawnElements()
         }
         //chute do inimigo
         if((nodeA.name == "enemy" && nodeB.name == "ball") ||
             (nodeA.name == "ball" && nodeB.name == "enemy")){
             //print("bola colidiu com parte de cima do gol emptyNodeDir")
-    //        enemy.physicsBody?.allowsRotation = true
-            let shoot = SKAction.rotate(byAngle: -.pi/2, duration: 0.2)
-            enemy.run(shoot)
-            let standUp = SKAction.rotate(byAngle: .pi * 2, duration: 0)
-            enemy.run(standUp)
+            //        enemy.physicsBody?.allowsRotation = true
+            if canShoot{
+                let shoot = SKAction.rotate(byAngle: -.pi/2, duration: 0.2)
+                enemy.run(shoot)
+                controlBotShoot()
+            }
+            
             enemy.zRotation = 0
-            enemy.physicsBody?.applyImpulse(CGVector(dx: -20, dy: 15))
+            enemy.physicsBody?.applyImpulse(CGVector(dx: -10, dy: 20))
         }
         
         if((nodeA.name == "emptyNodeDir" && nodeB.name == "ball") ||
             (nodeA.name == "ball" && nodeB.name == "emptyNodeDir")){
             //print("bola colidiu com parte de cima do gol emptyNodeDir")
-             ball.physicsBody?.applyImpulse(CGVector(dx: -30, dy: -5))
+            ball.physicsBody?.applyImpulse(CGVector(dx: -30, dy: -5))
         }
         
         if((nodeA.name == "emptyNodeEsq" && nodeB.name == "ball") ||
             (nodeA.name == "ball" && nodeB.name == "emptyNodeEsq")){
-              // print("bola colidiu com parte de cima do gol emptyNodeEsq")
+            // print("bola colidiu com parte de cima do gol emptyNodeEsq")
             ball.physicsBody?.applyImpulse(CGVector(dx: 30, dy: -5))
-          
+            
         }
         
         if((nodeA.name == "scene" && nodeB.name == "ball") ||
             (nodeA.name == "ball" && nodeB.name == "scene")) {
-              //print("bola com scene")
+            //print("bola com scene")
             let number = Int.random(in: 0 ... 10)
-                if number > 8 {
-                     ball.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 15))
-                }
+            if number > 8 {
+                ball.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 15))
+            }
             
-           
+            
             
         }
     }
-
+    
 }
 
 
@@ -474,9 +460,6 @@ extension GameScene: GKAgentDelegate{
         if let agent = agent as? GKAgent2D{
             if agent == enemyAgente {
                 enemy.position = CGPoint(x: Double(agent.position.x), y: Double(agent.position.y))
-//                print("BOT: ", enemy.position)
-//                print("enemy: ", enemyAgente?.position)
-//
             }
         }
     }
