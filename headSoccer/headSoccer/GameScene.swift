@@ -21,8 +21,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var ballAgente:GKAgent2D?
     var seekBehavior:GKBehavior?
     var gkGoal: GKGoal?
-    
     var timeStamp = 0.0
+    
+    var gameFinished = false
     
     var score = 90 {didSet { scoreLabelTimer.text = "\(score)"}}
     var scorePlayer1 = 0 {didSet {scoreLabelPlayer.text = "\(scorePlayer1)"}}
@@ -37,6 +38,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var goleiraDir = SKSpriteNode(imageNamed: "goleiraDir")
     var emptyNodeEsq = SKNode() // goleira
     var emptyNodeDir = SKNode() // goleira
+    var controleDoTimer = true
     
     override func didMove(to view: SKView) {
         physicsWorld.contactDelegate = self
@@ -50,7 +52,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func addElements(){
         createSceneContents()
         createBackground()
-        // createFaixa()
         createGoleiraEsq()
         createGoleirasDir()
         createMenuSuperior()
@@ -60,9 +61,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         createPlayer()
         createEnemy()
         createBall()
+        controleDoTimer = true
         decreseTimer()
         createEmptyNode()
-        
     }
     
     func setiA(){
@@ -92,16 +93,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
     //controle do game
-    var controleDoTimer = true
+    
     func decreseTimer(){
         let timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: controleDoTimer, block: { timer in
             if self.controleDoTimer{
+                
                 self.score -= 1
-                if self.score == 0 {
-                    self.controleDoTimer = false
-                    self.endGame()
-                    
-                }
+                
+            }
+            if self.score == 0 {
+                self.controleDoTimer = false
+                self.endGame()
+                
+            }
+            
+            if self.gameFinished{
+                timer.invalidate()
+                self.controleDoTimer = false
             }
         })
     }
@@ -156,20 +164,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     //HUDS
     func createScroreTimer() {
+       
         scoreLabelTimer = SKLabelNode(fontNamed: "Chalkduster")
         scoreLabelTimer.text = "90"
         scoreLabelTimer.fontSize = 18
         scoreLabelTimer.horizontalAlignmentMode = .center
         scoreLabelTimer.position = CGPoint(x: .zero, y: (scene?.size.height)! - (scene?.size.height)! * 0.71  )
         scoreLabelTimer.zPosition = 11
+         score = 90
         addChild(scoreLabelTimer)
     }
     func createScrorePlayer() {
+
+       
+     
         scoreLabelPlayer = SKLabelNode(fontNamed: "Chalkduster")
         scoreLabelPlayer.text = "0"
         scoreLabelPlayer.horizontalAlignmentMode = .center
         scoreLabelPlayer.position = CGPoint(x: .zero - 75, y: (scene?.size.height)! - (scene?.size.height)! * 0.70  )
         scoreLabelPlayer.zPosition = 11
+        scorePlayer1 = 0
         addChild(scoreLabelPlayer)
     }
     func createScroreEnemy() {
@@ -178,6 +192,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         scoreLabelEnemy.horizontalAlignmentMode = .center
         scoreLabelEnemy.position = CGPoint(x: .zero + 75, y: (scene?.size.height)! - (scene?.size.height)! * 0.70  )
         scoreLabelEnemy.zPosition = 11
+        scoreEnemy = 0
         addChild(scoreLabelEnemy)
     }
     func createBackground(){
@@ -301,10 +316,39 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.physicsBody?.collisionBitMask = 0b10
     }
     
+    
+    var playAgainPoints: CGRect?
+    var homePoints: CGRect?
     //MARK EDIT ELEMENTS
     func endGame(){
+        gameFinished = true
+        var playAgain = SKSpriteNode(imageNamed: "playAgain")
+        var home = SKSpriteNode(imageNamed: "home")
+        
+        playAgain.anchorPoint = .zero
+        playAgain.position = CGPoint(x: -150, y: -150)
+        playAgain.size.width = (scene?.size.width)!/8
+        playAgain.size.height = (scene?.size.height)!/5
+        playAgain.zPosition = 4
+        playAgainPoints = playAgain.calculateAccumulatedFrame()
+        addChild(playAgain)
+        
+        home.anchorPoint = .zero
+        home.position = CGPoint(x: 40, y: -160)
+        home.size.width = (scene?.size.width)!/8
+        home.size.height = (scene?.size.height)!/5
+        home.zPosition = 5
+        homePoints = home.calculateAccumulatedFrame()
+        addChild(home)
+        
         if scorePlayer1 > scoreEnemy {
-            print("vencedor player1")
+            let youWin = SKSpriteNode(imageNamed: "youwin")
+            youWin.anchorPoint = .zero
+            youWin.position = CGPoint(x: -160, y: -80)
+            youWin.size.width = (scene?.size.width)!/3
+            youWin.size.height = (scene?.size.height)!/2
+            youWin.zPosition = 6
+            addChild(youWin)
         }else if scoreEnemy > scorePlayer1 {
             print("vencedor enemy")
         }else {
@@ -362,6 +406,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             player.run(shoot)
         }
         player.zRotation = 0
+        
+        if gameFinished{
+            if firstTouch!.x > homePoints!.minX && firstTouch!.y > homePoints!.minY && firstTouch!.x < homePoints!.maxX && firstTouch!.y < homePoints!.maxY{
+                //volta pra tela inicial
+            }
+            if firstTouch!.x > playAgainPoints!.minX && firstTouch!.y > playAgainPoints!.minY && firstTouch!.x < playAgainPoints!.maxX && firstTouch!.y < playAgainPoints!.maxY{
+                //reinicia partida
+                self.removeAllChildren()
+                self.removeFromParent()
+                self.removeAllActions()
+
+                controleDoTimer = false
+                gameFinished = false
+                addElements()
+            }
+            //tratar toque em new game e home
+        }
     }
     
     //MARK: MOVIMENTOS
@@ -397,8 +458,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //player e inimigo
         if((nodeA.name == "player" && nodeB.name == "enemy") ||
             (nodeA.name == "enemy" && nodeB.name == "player")){
-            player.physicsBody?.applyImpulse(CGVector(dx: -5, dy: 0))
-            enemy.physicsBody?.applyImpulse(CGVector(dx: 5, dy: 0))
+//            player.physicsBody?.applyImpulse(CGVector(dx: -5, dy: 0))
+//            enemy.physicsBody?.applyImpulse(CGVector(dx: 5, dy: 0))
             
         }
         
@@ -415,6 +476,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             //print("enemy colidiu com bola")
             scorePlayer1 += 1
             spawnElements(nodaA: nodeA.name!, nodeB: nodeB.name!)
+            endGame()
         }
         //chute do inimigo
         if((nodeA.name == "enemy" && nodeB.name == "ball") ||
@@ -434,13 +496,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if((nodeA.name == "emptyNodeDir" && nodeB.name == "ball") ||
             (nodeA.name == "ball" && nodeB.name == "emptyNodeDir")){
             //print("bola colidiu com parte de cima do gol emptyNodeDir")
-            ball.physicsBody?.applyImpulse(CGVector(dx: -30, dy: -5))
+            ball.physicsBody?.applyImpulse(CGVector(dx: -10, dy: 0))
         }
         
         if((nodeA.name == "emptyNodeEsq" && nodeB.name == "ball") ||
             (nodeA.name == "ball" && nodeB.name == "emptyNodeEsq")){
             // print("bola colidiu com parte de cima do gol emptyNodeEsq")
-            ball.physicsBody?.applyImpulse(CGVector(dx: 30, dy: -5))
+            ball.physicsBody?.applyImpulse(CGVector(dx: 10, dy: 0))
             
         }
         

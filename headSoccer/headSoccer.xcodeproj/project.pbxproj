@@ -64,8 +64,8 @@
 			children = (
 				70FDDC4D22F47AD5009821F9 /* Support */,
 				70BC536F22F363BD00FB7E64 /* GameScene.swift */,
-				70BC537122F363BD00FB7E64 /* GameViewController.swift */,
 				705D62E522FB2531005F78C2 /* MenuScreen.swift */,
+				70BC537122F363BD00FB7E64 /* GameViewController.swift */,
 				70BC537622F363BF00FB7E64 /* Assets.xcassets */,
 				70BC536922F363BD00FB7E64 /* AppDelegate.swift */,
 				70FDDC5822F484AA009821F9 /* Main.storyboard */,
@@ -299,14 +299,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = TYNC5NT5U5;
+				DEVELOPMENT_TEAM = 5LGVPHY8YW;
 				INFOPLIST_FILE = headSoccer/Support/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = BetterChance.headSoccer;
+				PRODUCT_BUNDLE_IDENTIFIER = BetterChance.BetterChance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -318,14 +318,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = TYNC5NT5U5;
+				DEVELOPMENT_TEAM = 5LGVPHY8YW;
 				INFOPLIST_FILE = headSoccer/Support/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = BetterChance.headSoccer;
+				PRODUCT_BUNDLE_IDENTIFIER = BetterChance.BetterChance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
