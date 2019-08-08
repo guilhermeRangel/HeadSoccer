@@ -309,7 +309,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-    func spawnElements(){
+    func spawnElements(nodaA: String, nodeB: String){
         ball.removeFromParent()
         player.removeFromParent()
         enemy.removeFromParent()
@@ -319,6 +319,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(ball)
         addChild(player)
         addChild(enemy)
+        if nodaA == "goleiraEsq"  || nodeB == "goleiraEsq" {
+            ball.physicsBody?.applyImpulse(CGVector(dx: -5, dy: 30))
+        }else if nodaA == "goleiraDir"  || nodeB == "goleiraDir" {
+            ball.physicsBody?.applyImpulse(CGVector(dx: 5, dy: 30))
+        }
     }
     
     
@@ -399,14 +404,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             (nodeA.name == "ball" && nodeB.name == "goleiraEsq")){
             // print("enemy colidiu com bola")
             scoreEnemy += 1
-            spawnElements()
+            spawnElements(nodaA: nodeA.name!, nodeB: nodeB.name!)
         }
         //goleira dir e bola
         if((nodeA.name == "goleiraDir" && nodeB.name == "ball") ||
             (nodeA.name == "ball" && nodeB.name == "goleiraDir")){
             //print("enemy colidiu com bola")
             scorePlayer1 += 1
-            spawnElements()
+            spawnElements(nodaA: nodeA.name!, nodeB: nodeB.name!)
         }
         //chute do inimigo
         if((nodeA.name == "enemy" && nodeB.name == "ball") ||
