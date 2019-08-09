@@ -13,6 +13,7 @@
 		7087D3E722FDBE2000FCED35 /* palmas.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 7087D3E322FDBE2000FCED35 /* palmas.mp3 */; };
 		7087D3E822FDBE2000FCED35 /* finalGame.wav in Resources */ = {isa = PBXBuildFile; fileRef = 7087D3E422FDBE2000FCED35 /* finalGame.wav */; };
 		7087D3EA22FDD2E500FCED35 /* GorillazFifa2000.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 7087D3E922FDD2E400FCED35 /* GorillazFifa2000.mp3 */; };
+		7087D3EC22FDDDD100FCED35 /* SupermassiveBlackHole.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 7087D3EB22FDDDD100FCED35 /* SupermassiveBlackHole.mp3 */; };
 		70BC536C22F363BD00FB7E64 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 70BC536B22F363BD00FB7E64 /* GameScene.sks */; };
 		70BC536E22F363BD00FB7E64 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 70BC536D22F363BD00FB7E64 /* Actions.sks */; };
 		70BC537022F363BD00FB7E64 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70BC536F22F363BD00FB7E64 /* GameScene.swift */; };
@@ -30,6 +31,7 @@
 		7087D3E322FDBE2000FCED35 /* palmas.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = palmas.mp3; sourceTree = "<group>"; };
 		7087D3E422FDBE2000FCED35 /* finalGame.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = finalGame.wav; sourceTree = "<group>"; };
 		7087D3E922FDD2E400FCED35 /* GorillazFifa2000.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = GorillazFifa2000.mp3; sourceTree = "<group>"; };
+		7087D3EB22FDDDD100FCED35 /* SupermassiveBlackHole.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = SupermassiveBlackHole.mp3; sourceTree = "<group>"; };
 		70BC536622F363BD00FB7E64 /* headSoccer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = headSoccer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		70BC536922F363BD00FB7E64 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		70BC536B22F363BD00FB7E64 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -74,8 +76,8 @@
 			children = (
 				70FDDC4D22F47AD5009821F9 /* Support */,
 				70BC536F22F363BD00FB7E64 /* GameScene.swift */,
-				70BC537122F363BD00FB7E64 /* GameViewController.swift */,
 				705D62E522FB2531005F78C2 /* MenuScreen.swift */,
+				70BC537122F363BD00FB7E64 /* GameViewController.swift */,
 				70BC537622F363BF00FB7E64 /* Assets.xcassets */,
 				70BC536922F363BD00FB7E64 /* AppDelegate.swift */,
 				70FDDC5822F484AA009821F9 /* Main.storyboard */,
@@ -85,6 +87,7 @@
 				7087D3E122FDBE1F00FCED35 /* fundoGameSoccer.mp3 */,
 				7087D3E322FDBE2000FCED35 /* palmas.mp3 */,
 				7087D3E922FDD2E400FCED35 /* GorillazFifa2000.mp3 */,
+				7087D3EB22FDDDD100FCED35 /* SupermassiveBlackHole.mp3 */,
 			);
 			path = headSoccer;
 			sourceTree = "<group>";
@@ -163,6 +166,7 @@
 				7087D3E522FDBE2000FCED35 /* fundoGameSoccer.mp3 in Resources */,
 				7087D3E822FDBE2000FCED35 /* finalGame.wav in Resources */,
 				70BC537722F363BF00FB7E64 /* Assets.xcassets in Resources */,
+				7087D3EC22FDDDD100FCED35 /* SupermassiveBlackHole.mp3 in Resources */,
 				7087D3EA22FDD2E500FCED35 /* GorillazFifa2000.mp3 in Resources */,
 				70BC537A22F363BF00FB7E64 /* LaunchScreen.storyboard in Resources */,
 				7087D3E722FDBE2000FCED35 /* palmas.mp3 in Resources */,
@@ -326,7 +330,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = BetterChance.headSoccer;
+				PRODUCT_BUNDLE_IDENTIFIER = BetterChance.BetterCcdshance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -345,7 +349,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = BetterChance.headSoccer;
+				PRODUCT_BUNDLE_IDENTIFIER = BetterChance.BetterCcdshance;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

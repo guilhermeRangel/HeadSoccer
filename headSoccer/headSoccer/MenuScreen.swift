@@ -9,6 +9,7 @@
 
 import SpriteKit
 import AVFoundation
+
 import UIKit
 
 class MenuScreen: SKScene{
@@ -25,15 +26,16 @@ class MenuScreen: SKScene{
     var buttomPointsOther: CGRect?
     var skView : SKView?
     var gameScene : GameScene!
+    let backgroundSound = SKAudioNode(fileNamed: "SupermassiveBlackHole")
     override func didMove(to view: SKView) {
       
          skView = view as! SKView
        gameScene = GameScene(size: view.bounds.size)
         
 
-        skView?.showsFPS = true
-        skView?.showsNodeCount = true
-        skView?.showsPhysics = true
+        skView?.showsFPS = false
+        skView?.showsNodeCount = false
+        skView?.showsPhysics = false
         skView?.ignoresSiblingOrder = true
         gameScene.scaleMode = .aspectFill
         gameScene.anchorPoint = CGPoint(x: 0.5, y: 0.5)
@@ -77,13 +79,14 @@ class MenuScreen: SKScene{
        
        // addChild(trofeuG)
         
-       // createSoundBackground()
+       createSoundBackground()
         
     }
     
     func createSoundBackground(){
-        btnMultiplayer.run(SKAction.playSoundFileNamed("GorillazFifa2000", waitForCompletion: true))
-
+       
+        backgroundSound.run(SKAction.play())
+        addChild(backgroundSound)
         
     }
     
@@ -94,7 +97,7 @@ class MenuScreen: SKScene{
         
         if firstTouch!.x > buttomPointsSingle!.minX && firstTouch!.y > buttomPointsSingle!.minY && firstTouch!.x < buttomPointsSingle!.maxX && firstTouch!.y < buttomPointsSingle!.maxY{
             
-            btnMultiplayer.run(SKAction.pause())
+            backgroundSound.run(SKAction.pause())
             skView?.presentScene(gameScene)
          
            
