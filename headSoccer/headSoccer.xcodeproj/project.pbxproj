@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		705D62E622FB2531005F78C2 /* MenuScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 705D62E522FB2531005F78C2 /* MenuScreen.swift */; };
+		7087D3E522FDBE2000FCED35 /* fundoGameSoccer.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 7087D3E122FDBE1F00FCED35 /* fundoGameSoccer.mp3 */; };
+		7087D3E622FDBE2000FCED35 /* apito2.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 7087D3E222FDBE1F00FCED35 /* apito2.aiff */; };
+		7087D3E722FDBE2000FCED35 /* palmas.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 7087D3E322FDBE2000FCED35 /* palmas.mp3 */; };
+		7087D3E822FDBE2000FCED35 /* finalGame.wav in Resources */ = {isa = PBXBuildFile; fileRef = 7087D3E422FDBE2000FCED35 /* finalGame.wav */; };
+		7087D3EA22FDD2E500FCED35 /* GorillazFifa2000.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 7087D3E922FDD2E400FCED35 /* GorillazFifa2000.mp3 */; };
 		70BC536C22F363BD00FB7E64 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 70BC536B22F363BD00FB7E64 /* GameScene.sks */; };
 		70BC536E22F363BD00FB7E64 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 70BC536D22F363BD00FB7E64 /* Actions.sks */; };
 		70BC537022F363BD00FB7E64 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70BC536F22F363BD00FB7E64 /* GameScene.swift */; };
@@ -20,6 +25,11 @@
 
 /* Begin PBXFileReference section */
 		705D62E522FB2531005F78C2 /* MenuScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuScreen.swift; sourceTree = "<group>"; };
+		7087D3E122FDBE1F00FCED35 /* fundoGameSoccer.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = fundoGameSoccer.mp3; sourceTree = "<group>"; };
+		7087D3E222FDBE1F00FCED35 /* apito2.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = apito2.aiff; sourceTree = "<group>"; };
+		7087D3E322FDBE2000FCED35 /* palmas.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = palmas.mp3; sourceTree = "<group>"; };
+		7087D3E422FDBE2000FCED35 /* finalGame.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = finalGame.wav; sourceTree = "<group>"; };
+		7087D3E922FDD2E400FCED35 /* GorillazFifa2000.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = GorillazFifa2000.mp3; sourceTree = "<group>"; };
 		70BC536622F363BD00FB7E64 /* headSoccer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = headSoccer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		70BC536922F363BD00FB7E64 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		70BC536B22F363BD00FB7E64 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -70,6 +80,11 @@
 				70BC536922F363BD00FB7E64 /* AppDelegate.swift */,
 				70FDDC5822F484AA009821F9 /* Main.storyboard */,
 				70BC537822F363BF00FB7E64 /* LaunchScreen.storyboard */,
+				7087D3E422FDBE2000FCED35 /* finalGame.wav */,
+				7087D3E222FDBE1F00FCED35 /* apito2.aiff */,
+				7087D3E122FDBE1F00FCED35 /* fundoGameSoccer.mp3 */,
+				7087D3E322FDBE2000FCED35 /* palmas.mp3 */,
+				7087D3E922FDD2E400FCED35 /* GorillazFifa2000.mp3 */,
 			);
 			path = headSoccer;
 			sourceTree = "<group>";
@@ -143,9 +158,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				70BC536C22F363BD00FB7E64 /* GameScene.sks in Resources */,
+				7087D3E622FDBE2000FCED35 /* apito2.aiff in Resources */,
 				70FDDC5922F484AA009821F9 /* Main.storyboard in Resources */,
+				7087D3E522FDBE2000FCED35 /* fundoGameSoccer.mp3 in Resources */,
+				7087D3E822FDBE2000FCED35 /* finalGame.wav in Resources */,
 				70BC537722F363BF00FB7E64 /* Assets.xcassets in Resources */,
+				7087D3EA22FDD2E500FCED35 /* GorillazFifa2000.mp3 in Resources */,
 				70BC537A22F363BF00FB7E64 /* LaunchScreen.storyboard in Resources */,
+				7087D3E722FDBE2000FCED35 /* palmas.mp3 in Resources */,
 				70BC536E22F363BD00FB7E64 /* Actions.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

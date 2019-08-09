@@ -13,9 +13,16 @@ import UIKit
 
 class MenuScreen: SKScene{
     
-    let background2 = SKSpriteNode(imageNamed: "campo1")
-    let btnInit = SKSpriteNode(imageNamed: "btnInit")
-    var buttomPoints: CGRect?
+    let background2 = SKSpriteNode(imageNamed: "BGcapa")
+    let btnInit = SKSpriteNode(imageNamed: "btnSingle")
+    
+    let btnMultiplayer = SKSpriteNode(imageNamed: "btnMultiplayer")
+    let btnOthers = SKSpriteNode(imageNamed: "others")
+    let trofeuG = SKSpriteNode(imageNamed: "trofeu1")
+    let trofeuP = SKSpriteNode(imageNamed: "trofeu2")
+    var buttomPointsSingle: CGRect?
+    var buttomPointsMultiplayer: CGRect?
+    var buttomPointsOther: CGRect?
     var skView : SKView?
     var gameScene : GameScene!
     override func didMove(to view: SKView) {
@@ -38,14 +45,46 @@ class MenuScreen: SKScene{
         background2.zPosition = 0
         addChild(background2)
         
+        print(gameScene.size)
         
         
         btnInit.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        btnInit.size = CGSize(width: 300, height: 50)
-        btnInit.position = CGPoint(x: (gameScene?.size.width)! / 2, y: (gameScene.size.height / 2) - 20 )
+        btnInit.size = CGSize(width: btnInit.size.width * 1.6 , height: btnInit.size.height * 0.8)
+        btnInit.position = CGPoint(x: (gameScene?.size.width)! / 2 + 10, y: (gameScene.size.height / 2) + 5)
         btnInit.zPosition = 1
-        buttomPoints = btnInit.calculateAccumulatedFrame()
+        buttomPointsSingle = btnInit.calculateAccumulatedFrame()
         addChild(btnInit)
+        
+        
+        btnMultiplayer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        btnMultiplayer.size = CGSize(width: btnMultiplayer.size.width * 1.6, height: btnMultiplayer.size.height * 0.8)
+        btnMultiplayer.position = CGPoint(x: (gameScene?.size.width)! / 2 + 10, y: (gameScene.size.height / 2) - 50)
+        btnMultiplayer.zPosition = 1
+        buttomPointsMultiplayer = btnMultiplayer.calculateAccumulatedFrame()
+        addChild(btnMultiplayer)
+
+        btnOthers.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        btnOthers.size = CGSize(width: btnOthers.size.width , height: btnInit.size.height * 0.8)
+        btnOthers.position = CGPoint(x: (gameScene?.size.width)! / 2 + 10, y: (gameScene.size.height / 2) - 100)
+        btnOthers.zPosition = 1
+        buttomPointsOther = btnOthers.calculateAccumulatedFrame()
+        addChild(btnOthers)
+        
+        trofeuG.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        trofeuG.size = CGSize(width: trofeuG.size.width , height: trofeuG.size.height)
+        trofeuG.position = CGPoint(x: (gameScene?.size.width)! / 2 + 10, y: (gameScene.size.height / 2) - 100)
+        trofeuG.zPosition = 1
+       
+       // addChild(trofeuG)
+        
+       // createSoundBackground()
+        
+    }
+    
+    func createSoundBackground(){
+        btnMultiplayer.run(SKAction.playSoundFileNamed("GorillazFifa2000", waitForCompletion: true))
+
+        
     }
     
     
@@ -53,9 +92,9 @@ class MenuScreen: SKScene{
     override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         var firstTouch = touches.first?.location(in: self)
         
-        if firstTouch!.x > buttomPoints!.minX && firstTouch!.y > buttomPoints!.minY && firstTouch!.x < buttomPoints!.maxX && firstTouch!.y < buttomPoints!.maxY{
+        if firstTouch!.x > buttomPointsSingle!.minX && firstTouch!.y > buttomPointsSingle!.minY && firstTouch!.x < buttomPointsSingle!.maxX && firstTouch!.y < buttomPointsSingle!.maxY{
             
-           
+            btnMultiplayer.run(SKAction.pause())
             skView?.presentScene(gameScene)
          
            
