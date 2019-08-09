@@ -10,7 +10,7 @@ import SpriteKit
 import GameplayKit
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
-    
+    var controlFinish = false
     //hud elements
     var scoreLabelTimer: SKLabelNode!
     var scoreLabelPlayer: SKLabelNode!
@@ -22,6 +22,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var seekBehavior:GKBehavior?
     var gkGoal: GKGoal?
     var timeStamp = 0.0
+    
+    var pausePoints: CGRect?
+    var cenaPausada = false
     
     var gameFinished = false
     
@@ -61,6 +64,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         createPlayer()
         createEnemy()
         createBall()
+        createPause()
         controleDoTimer = true
         decreseTimer()
         createEmptyNode()
@@ -171,13 +175,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         scoreLabelTimer.horizontalAlignmentMode = .center
         scoreLabelTimer.position = CGPoint(x: .zero, y: (scene?.size.height)! - (scene?.size.height)! * 0.71  )
         scoreLabelTimer.zPosition = 11
-         score = 90
+        score = 90
         addChild(scoreLabelTimer)
     }
+    
+    func createPause() {
+        let youWin = SKSpriteNode(imageNamed: "pause")
+        youWin.anchorPoint = .zero
+        youWin.position = CGPoint(x: 350, y: 100)
+        youWin.size.width = 80
+        youWin.size.height = 80
+        youWin.zPosition = 12
+        pausePoints = youWin.calculateAccumulatedFrame()
+        addChild(youWin)
+    }
+    
     func createScrorePlayer() {
-
-       
-     
         scoreLabelPlayer = SKLabelNode(fontNamed: "Chalkduster")
         scoreLabelPlayer.text = "0"
         scoreLabelPlayer.horizontalAlignmentMode = .center
@@ -350,10 +363,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             youWin.zPosition = 6
             addChild(youWin)
         }else if scoreEnemy > scorePlayer1 {
-            print("vencedor enemy")
+            let youlose = SKSpriteNode(imageNamed: "youlose")
+            youlose.anchorPoint = .zero
+            youlose.position = CGPoint(x: -160, y: -80)
+            youlose.size.width = (scene?.size.width)!/3
+            youlose.size.height = (scene?.size.height)!/2
+            youlose.zPosition = 6
+            addChild(youlose)
         }else {
-            print("empate")
-        }
+            let draw = SKSpriteNode(imageNamed: "draw")
+            draw.anchorPoint = .zero
+            draw.position = CGPoint(x: -160, y: -80)
+            draw.size.width = (scene?.size.width)!/3
+            draw.size.height = (scene?.size.height)!/2
+            draw.zPosition = 6
+            addChild(draw)        }
     }
     
     func spawnElements(nodaA: String, nodeB: String){
@@ -375,6 +399,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
     override func update(_ currentTime: TimeInterval) {
+        if scoreEnemy == 7 || scorePlayer1 == 7 || score == 0 && !controlFinish{
+            controlFinish = true
+            endGame()
+        }
         if scene != nil {
             if timeStamp == 0.0 {
                 timeStamp = currentTime
@@ -404,6 +432,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             player.physicsBody?.allowsRotation = true
             let shoot = SKAction.rotate(byAngle: .pi/2, duration: 0.2)
             player.run(shoot)
+        }
+        if firstTouch!.x > pausePoints!.minX && firstTouch!.y > pausePoints!.minY && firstTouch!.x < pausePoints!.maxX && firstTouch!.y < pausePoints!.maxY{
+            if cenaPausada == false{
+                scene?.isPaused = true
+                cenaPausada = true
+            }
+            else if cenaPausada == true{
+                scene?.isPaused = false
+                cenaPausada = false
+            }
         }
         player.zRotation = 0
         
@@ -476,7 +514,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             //print("enemy colidiu com bola")
             scorePlayer1 += 1
             spawnElements(nodaA: nodeA.name!, nodeB: nodeB.name!)
-            endGame()
         }
         //chute do inimigo
         if((nodeA.name == "enemy" && nodeB.name == "ball") ||
