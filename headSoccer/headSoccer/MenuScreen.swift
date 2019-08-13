@@ -10,7 +10,6 @@
 import SpriteKit
 import AVFoundation
 
-import UIKit
 
 class MenuScreen: SKScene{
     
@@ -81,6 +80,15 @@ class MenuScreen: SKScene{
         
        createSoundBackground()
         
+        
+        
+        
+        
+        
+        
+       
+        
+       
     }
     
     func createSoundBackground(){

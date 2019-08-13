@@ -9,8 +9,10 @@
 import SpriteKit
 import GameplayKit
 import Foundation
+import GoogleMobileAds
+import UIKit
 
-class GameScene: SKScene, SKPhysicsContactDelegate {
+class GameScene: SKScene, SKPhysicsContactDelegate, GADInterstitialDelegate {
     var controlFinish = false
     //hud elements
     var scoreLabelTimer: SKLabelNode!
@@ -45,7 +47,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var controleDoTimer = true
     
 
-
+   var interstitial: GADInterstitial!
     
     
     
@@ -55,7 +57,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         setiA()
         enemyAgente?.delegate = self
         
+        interstitial = GADInterstitial(adUnitID: "ca-app-pub-3940256099942544/4411468910")
+        interstitial.delegate = self
+        let request = GADRequest()
+        interstitial.load(request)
     }
+    
+    func createAndLoadInterstitial() -> GADInterstitial {
+        interstitial = GADInterstitial(adUnitID: "ca-app-pub-3940256099942544/4411468910")
+        interstitial.delegate = self
+        interstitial.load(GADRequest())
+        return interstitial
+    }
+    
+    func interstitialDidDismissScreen(_ ad: GADInterstitial) {
+       interstitial = createAndLoadInterstitial()
+    }
+          
     
     func createSoundBackground(){
         scene?.run(SKAction.playSoundFileNamed("fundoGameSoccer", waitForCompletion: false))
@@ -419,6 +437,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         
         scene?.isPaused = true
+        let viewController = view?.findViewController()
+        interstitial.present(fromRootViewController: viewController!)
         
     }
     
@@ -657,6 +677,19 @@ extension GameScene: GKAgentDelegate{
             if agent == enemyAgente {
                 enemy.position = CGPoint(x: Double(agent.position.x), y: Double(agent.position.y))
             }
+        }
+    }
+}
+
+
+extension UIView {
+    func findViewController() -> UIViewController? {
+        if let nextResponder = self.next as? UIViewController {
+            return nextResponder
+        } else if let nextResponder = self.next as? UIView {
+            return nextResponder.findViewController()
+        } else {
+            return nil
         }
     }
 }
