@@ -50,20 +50,9 @@ class GameScene: SKScene {
     }
     
     override public func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if let location = touches.first?.location(in: self){
-            
-            
-//                    if location.x < nodes.position.x{
-        
-                       // print(location)
-                        entityManager.sceneNode!.children[0].physicsBody?.applyImpulse(CGVector(dx: -10, dy: 0))
-//                    }
-                
-            
-            
-            
-            
-        }
+        guard touches.first?.location(in: self) != nil else { return }
+        guard let firstNode = entityManager.sceneNode?.children.first else { return }
+        firstNode.physicsBody?.applyImpulse(CGVector(dx: -10, dy: 0))
         // stateMachine.enter(stateMachine.currentState is GameRunningState ? GamePausedState.self : GameRunningState.self)
     }
     

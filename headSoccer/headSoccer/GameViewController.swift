@@ -17,16 +17,22 @@ class GameViewController: UIViewController {
     var scene: GameScene?
     
     fileprivate func createScene() {
+        guard let skView = view as? SKView else {
+            assertionFailure("Expected SKView as root view")
+            return
+        }
+        
         scene = GameScene(size: view.bounds.size)
-        let skView = view as! SKView
+        guard let scene = scene else { return }
+        
         skView.showsFPS = true
         skView.showsNodeCount = true
         skView.showsPhysics = true
-        scene?.scaleMode = .aspectFill
-        scene?.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        scene?.physicsWorld.gravity = CGVector(dx: 0, dy: -0.2)
-        scene?.physicsBody = SKPhysicsBody.init(edgeLoopFrom: scene!.frame)
-        skView.presentScene(scene!)
+        scene.scaleMode = .aspectFill
+        scene.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        scene.physicsWorld.gravity = CGVector(dx: 0, dy: -0.2)
+        scene.physicsBody = SKPhysicsBody(edgeLoopFrom: scene.frame)
+        skView.presentScene(scene)
     }
     
    
@@ -66,6 +72,5 @@ class GameViewController: UIViewController {
         
     }
 }
-
 
 

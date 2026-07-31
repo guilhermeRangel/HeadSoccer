@@ -31,35 +31,53 @@ final class Personagem: GKEntity {
         
         switch type {
         case .enemy:
-            spriteComponent = SpriteComponent(imageNamed: "enemy")
-            spriteComponent?.spriteNode.name = "enemy"
-            positionComponent = PostionComponent(node: renderComponent.node, type: Elements.enemy)
-            spritePhysics = PhysicsComponent(nodePhysics: spriteComponent!.spriteNode, type: Elements.enemy, nodeTexture: spriteComponent!.spriteNodeTexture)
-            spriteComponent?.spriteNode.size = CGSize(width: (spriteComponent?.spriteNode.size.width)! / 5, height: (spriteComponent?.spriteNode.size.height)! / 5)
+            let sprite = SpriteComponent(imageNamed: "enemy")
+            sprite.spriteNode.name = "enemy"
+            sprite.spriteNode.size = CGSize(width: sprite.spriteNode.size.width / 5,
+                                            height: sprite.spriteNode.size.height / 5)
+            let position = PostionComponent(node: renderComponent.node, type: .enemy)
+            let physics = PhysicsComponent(nodePhysics: sprite.spriteNode, type: .enemy, nodeTexture: sprite.spriteNodeTexture)
+            spriteComponent = sprite
+            positionComponent = position
+            spritePhysics = physics
             
         case .player:
-            spriteComponent = SpriteComponent(imageNamed: "player")
-            spriteComponent?.spriteNode.name = "player"
-             positionComponent = PostionComponent(node: renderComponent.node, type: Elements.player)
-            spritePhysics = PhysicsComponent(nodePhysics: spriteComponent!.spriteNode, type: Elements.player, nodeTexture: spriteComponent!.spriteNodeTexture)
-            spriteComponent?.spriteNode.size = CGSize(width: (spriteComponent?.spriteNode.size.width)! / 5, height: (spriteComponent?.spriteNode.size.height)! / 5)
+            let sprite = SpriteComponent(imageNamed: "player")
+            sprite.spriteNode.name = "player"
+            sprite.spriteNode.size = CGSize(width: sprite.spriteNode.size.width / 5,
+                                            height: sprite.spriteNode.size.height / 5)
+            let position = PostionComponent(node: renderComponent.node, type: .player)
+            let physics = PhysicsComponent(nodePhysics: sprite.spriteNode, type: .player, nodeTexture: sprite.spriteNodeTexture)
+            spriteComponent = sprite
+            positionComponent = position
+            spritePhysics = physics
             
         case .ball:
-            spriteComponent = SpriteComponent(imageNamed: "ball")
-            spriteComponent?.spriteNode.name = "ball"
-            positionComponent = PostionComponent(node: renderComponent.node, type: Elements.ball)
-            spritePhysics = PhysicsComponent(nodePhysics: spriteComponent!.spriteNode, type: Elements.ball, nodeTexture: spriteComponent!.spriteNodeTexture)
-            spriteComponent?.spriteNode.size = CGSize(width: (spriteComponent?.spriteNode.size.width)! / 8, height: (spriteComponent?.spriteNode.size.height)! / 8)
+            let sprite = SpriteComponent(imageNamed: "ball")
+            sprite.spriteNode.name = "ball"
+            sprite.spriteNode.size = CGSize(width: sprite.spriteNode.size.width / 8,
+                                            height: sprite.spriteNode.size.height / 8)
+            let position = PostionComponent(node: renderComponent.node, type: .ball)
+            let physics = PhysicsComponent(nodePhysics: sprite.spriteNode, type: .ball, nodeTexture: sprite.spriteNodeTexture)
+            spriteComponent = sprite
+            positionComponent = position
+            spritePhysics = physics
             
         }
 
-      
        
-        addComponent(positionComponent!)
-        addComponent(spritePhysics!)
-        addComponent(spriteComponent!)
         
-        renderComponent.node.addChild(spriteComponent!.spriteNode)
+        guard let positionComponent = positionComponent,
+              let spritePhysics = spritePhysics,
+              let spriteComponent = spriteComponent else {
+            return
+        }
+        
+        addComponent(positionComponent)
+        addComponent(spritePhysics)
+        addComponent(spriteComponent)
+        
+        renderComponent.node.addChild(spriteComponent.spriteNode)
        
         
         addComponent(scaleComponent)
